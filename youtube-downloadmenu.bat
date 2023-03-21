@@ -5,7 +5,10 @@ cls
 :menu
 cls
 echo Zorg ervoor dat als er een ^& teken aanwezig is in de youtube link je hier een ^^ voor zet!
+echo Om yt-dlp te updaten voer dan "update" in bij de URL.
+echo
 set /p url="Voer youtube url in: "
+if %url% == "update" goto updateytdlp
 echo Selecteer een optie.
 echo.
 echo 1. MP3 met playlist
@@ -24,8 +27,14 @@ echo Ongeldige invoer! Probeer het opnieuw.
 pause
 goto menu
 
+:updateytdlp
+echo Bezig met downloaden van meest recente release
+curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe -o yt-dlp.exe
+echo Druk op een toets om terug te gaan naar het hoofdmenu.
+pause >nul
+goto menu
+
 :mp3withplaylist
-echo mp3metpl
 echo -o %%(title)s.%%(ext)s >%TEMP%\ytdl-config.txt
 echo --audio-format mp3 >>%TEMP%\ytdl-config.txt
 echo --throttled-rate 100K >>%TEMP%\ytdl-config.txt
