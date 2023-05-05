@@ -8,7 +8,7 @@ echo Zorg ervoor dat als er een ^& teken aanwezig is in de youtube link je hier 
 echo Om yt-dlp te updaten voer dan "update" in bij de URL.
 echo
 set /p url="Voer youtube url in: "
-if %url% == "update" goto updateytdlp
+if "%url%" == "update" goto updateytdlp
 echo Selecteer een optie.
 echo.
 echo 1. MP3 met playlist
@@ -32,8 +32,19 @@ pause
 goto menu
 
 :updateytdlp
+echo Bezig met controleren van geïnstalleerde yt-dlp versie
+for /f "tokens=1 delims==" %%V in ('yt-dlp.exe --version') do set version=%%V
+echo Bezig met controleren van meest recente versie
+for /f "tokens=7 delims=/" %%I in ('curl -i https://github.com/yt-dlp/yt-dlp/releases/latest ^| findstr Location') do set onlineversion=%%I
+if %version% == %onlineversion%  goto noupdatenecessary 
 echo Bezig met downloaden van meest recente release
 curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe -o yt-dlp.exe
+echo Druk op een toets om terug te gaan naar het hoofdmenu.
+pause >nul
+goto menu
+
+:noupdatenecessary
+echo Geen nieuwe update beschikbaar
 echo Druk op een toets om terug te gaan naar het hoofdmenu.
 pause >nul
 goto menu
@@ -43,10 +54,10 @@ echo -o %%(title)s.%%(ext)s >%TEMP%\ytdl-config.txt
 echo --audio-format mp3 >>%TEMP%\ytdl-config.txt
 echo --throttled-rate 100K >>%TEMP%\ytdl-config.txt
 echo -x >>%TEMP%\ytdl-config.txt
-echo --sponsorblock-remove intro,outro,music_offtopic >>%TEMP%\ytdl-config.txt
+echo --sponsorblock-remove intro,outro,music_offtopic >>%TEMP%\ ytdl-config.txt
 echo --yes-playlist >>%TEMP%\ytdl-config.txt
 echo --audio-quality 0 >>%TEMP%\ytdl-config.txt
-yt-dlp.exe --config-location %TEMP%\ytdl-config.txt %url%
+yt-dlp.exe --config-location %TEMP%\ytdl-config.txt "%url%"
 echo.
 echo Druk op een toets om terug te gaan naar URL selectie.
 pause >nul
@@ -60,7 +71,7 @@ echo --sponsorblock-remove intro,outro,music_offtopic >>%TEMP%\ytdl-config.txt
 echo --no-playlist >>%TEMP%\ytdl-config.txt
 echo -x >>%TEMP%\ytdl-config.txt
 echo --audio-quality 0 >>%TEMP%\ytdl-config.txt
-yt-dlp.exe --config-location %TEMP%\ytdl-config.txt %url%
+yt-dlp.exe --config-location %TEMP%\ytdl-config.txt "%url%"
 echo.
 echo Druk op een toets om terug te gaan naar URL selectie.
 pause >nul
@@ -74,7 +85,7 @@ echo --sponsorblock-remove intro,outro,music_offtopic >>%TEMP%\ytdl-config.txt
 echo -x >>%TEMP%\ytdl-config.txt
 echo --yes-playlist >>%TEMP%\ytdl-config.txt
 echo --audio-quality 0 >>%TEMP%\ytdl-config.txt
-yt-dlp.exe --config-location %TEMP%\ytdl-config.txt %url%
+yt-dlp.exe --config-location %TEMP%\ytdl-config.txt "%url%"
 echo.
 echo Druk op een toets om terug te gaan naar URL selectie.
 pause >nul
@@ -89,7 +100,7 @@ echo --sponsorblock-remove intro,outro,music_offtopic >>%TEMP%\ytdl-config.txt
 echo --no-playlist >>%TEMP%\ytdl-config.txt
 echo -x >>%TEMP%\ytdl-config.txt
 echo --audio-quality 0 >>%TEMP%\ytdl-config.txt
-yt-dlp.exe --config-location %TEMP%\ytdl-config.txt %url%
+yt-dlp.exe --config-location %TEMP%\ytdl-config.txt "%url%"
 echo.
 echo Druk op een toets om terug te gaan naar URL selectie.
 pause >nul
@@ -101,7 +112,7 @@ echo --throttled-rate 100K >>%TEMP%\ytdl-config.txt
 echo --sponsorblock-remove intro,outro,music_offtopic >>%TEMP%\ytdl-config.txt
 echo --yes-playlist >>%TEMP%\ytdl-config.txt
 echo -f mp4 >>%TEMP%\ytdl-config.txt
-yt-dlp.exe --config-location %TEMP%\ytdl-config.txt %url%
+yt-dlp.exe --config-location %TEMP%\ytdl-config.txt "%url%"
 echo.
 echo Druk op een toets om terug te gaan naar URL selectie.
 pause >nul
@@ -114,7 +125,7 @@ echo -f mp4 >>%TEMP%\ytdl-config.txt
 echo --throttled-rate 100K >>%TEMP%\ytdl-config.txt
 echo --sponsorblock-remove intro,outro,music_offtopic >>%TEMP%\ytdl-config.txt
 echo --no-playlist >>%TEMP%\ytdl-config.txt
-yt-dlp.exe --config-location %TEMP%\ytdl-config.txt %url%
+yt-dlp.exe --config-location %TEMP%\ytdl-config.txt "%url%"
 echo.
 echo Druk op een toets om terug te gaan naar URL selectie.
 pause >nul
